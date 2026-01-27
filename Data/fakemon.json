@@ -1,0 +1,63 @@
+[
+    {
+        "name":  "FakeMon",
+        "internalName":  "FAKEMON",
+        "type1":  ":NORMAL",
+        "type2":  "",
+        "hp":  60,
+        "atk":  60,
+        "def":  60,
+        "spa":  60,
+        "spd":  60,
+        "spe":  60,
+        "abilities":  [
+
+                      ],
+        "genderRate":  "Female50Percent",
+        "growthRate":  "Medium",
+        "baseExp":  100,
+        "rareness":  45,
+        "happiness":  70,
+        "compatibility":  "Undiscovered",
+        "stepsToHatch":  5000,
+        "height":  0.1,
+        "weight":  1,
+        "color":  "Red",
+        "shape":  "Head",
+        "habitat":  "None",
+        "kind":  "Fakemon",
+        "pokedex":  "A newly discovered Fakemon by Fill"
+    },
+    {
+        "name":  "FakemonTwo",
+        "internalName":  "FAKEMON2",
+        "type1":  ":NORMAL",
+        "type2":  "",
+        "hp":  60,
+        "atk":  60,
+        "def":  60,
+        "spa":  60,
+        "spd":  60,
+        "spe":  60,
+        "abilities":  [
+
+                      ],
+        "genderRate":  "Female50Percent",
+        "growthRate":  "Medium",
+        "baseExp":  100,
+        "rareness":  45,
+        "happiness":  70,
+        "compatibility":  "Undiscovered",
+        "stepsToHatch":  5000,
+        "height":  0.1,
+        "weight":  1,
+        "color":  "Red",
+        "shape":  "Head",
+        "habitat":  "None",
+        "kind":  "Fakemon",
+        "pokedex":  "A second placeholder Fakemon entry."
+    }
+]
+
+
+
