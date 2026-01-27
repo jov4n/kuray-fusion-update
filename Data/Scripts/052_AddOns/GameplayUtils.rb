@@ -1152,8 +1152,9 @@ end
 
 
 def obtainStarter(starterIndex=0)
+  fallback_list = Settings::KANTO_STARTERS
   if($game_switches[SWITCH_RANDOM_STARTERS])
-    starter=obtainRandomizedStarter(starterIndex)
+    starter = obtainRandomizedStarter(starterIndex)
   else
     startersList = Settings::KANTO_STARTERS
     if $game_switches[SWITCH_JOHTO_STARTERS]
@@ -1165,9 +1166,18 @@ def obtainStarter(starterIndex=0)
     elsif $game_switches[SWITCH_KALOS_STARTERS]
       startersList = Settings::KALOS_STARTERS
     end
+    fallback_list = startersList
     starter = startersList[starterIndex]
   end
-  return GameData::Species.get(starter)
+  species = GameData::Species.try_get(starter)
+  if !species && starter.is_a?(Array) && starter.length >= 2
+    species = getFusionSpecies(starter[0], starter[1])
+  end
+  if !species
+    fallback = fallback_list[starterIndex] || fallback_list[0]
+    species = GameData::Species.try_get(fallback) || GameData::Species.try_get(:BULBASAUR)
+  end
+  return species
 end
 
 #body0

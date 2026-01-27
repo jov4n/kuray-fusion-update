@@ -239,7 +239,7 @@ def get_unfused_sprite_path(species_id, spriteform = nil)
     return "Graphics/Battlers/000.png"
   end
 
-  spriteform_letter = spriteform ? "_" + spriteform.to_s : ""
+  spriteform_letter = (spriteform && spriteform.to_i != 0) ? "_" + spriteform.to_s : ""
   folder = dex_key.to_s
   
   # Try symbolic path first if enabled/available
@@ -252,6 +252,19 @@ def get_unfused_sprite_path(species_id, spriteform = nil)
   path = Settings::BATTLERS_FOLDER + folder + spriteform_letter + "/" + filename
   resolved = pbResolveBitmap(path)
   return resolved if resolved
+
+  # Legacy numeric fallback (e.g., Graphics/Battlers/4/4.png)
+  if species_data.id_number && species_data.id_number > 0
+    legacy_key = species_data.id_number.to_s
+    legacy_path = Settings::BATTLERS_FOLDER + legacy_key + "/" + _INTL("{1}.png", legacy_key)
+    resolved = pbResolveBitmap(legacy_path)
+    return resolved if resolved
+    if spriteform
+      legacy_form_path = Settings::BATTLERS_FOLDER + legacy_key + "/" + _INTL("{1}_{2}.png", legacy_key, spriteform)
+      resolved = pbResolveBitmap(legacy_form_path)
+      return resolved if resolved
+    end
+  end
 
   default_path = Settings::DEFAULT_SPRITE_PATH
   resolved = pbResolveBitmap(default_path)
