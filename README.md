@@ -119,6 +119,16 @@ Required keys (minimum):
 }
 ```
 
+Optional: level-up moves (moveset)
+
+```
+"moves": [
+  [1, "TRIATTACK2"],
+  [1, "HAZE"],
+  [8, "FIRESPIN"]
+]
+```
+
 ### 2) Add sprite
 
 Preferred base sprite path:
