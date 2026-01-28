@@ -1,7 +1,8 @@
 [
     {
-        "name":  "FakeMon",
-        "internalName":  "FAKEMON",
+        "name":  "FakeMon JSON",
+        "internalName":  "1_JSON",
+        "author":  "JSON",
         "type1":  ":NORMAL",
         "type2":  "",
         "hp":  60,
@@ -13,6 +14,56 @@
         "abilities":  [
 
                       ],
+        "moves": [
+            [1, "TRIATTACK2"],
+            [1, "HAZE"],
+            [1, "SAFEGUARD"],
+            [1, "MIST"],
+            [1, "WINGATTACK"],
+            [1, "EMBER"],
+            [1, "PECK"],
+            [1, "THUNDERSHOCK"],
+            [1, "GUST"],
+            [1, "POWDERSNOW"],
+            [8, "FIRESPIN"],
+            [8, "THUNDERWAVE"],
+            [8, "MIST"],
+            [15, "AGILITY"],
+            [15, "DETECT"],
+            [15, "ICESHARD"],
+            [22, "ENDURE"],
+            [22, "PLUCK"],
+            [22, "MINDREADER"],
+            [29, "ANCIENTPOWER"],
+            [29, "ANCIENTPOWER"],
+            [29, "ANCIENTPOWER"],
+            [36, "FLAMETHROWER"],
+            [36, "CHARGE"],
+            [36, "AGILITY"],
+            [43, "SAFEGUARD"],
+            [43, "AGILITY"],
+            [43, "ICEBEAM"],
+            [50, "AIRSLASH"],
+            [50, "DISCHARGE"],
+            [50, "REFLECT"],
+            [57, "ROOST"],
+            [57, "ROOST"],
+            [57, "ROOST"],
+            [64, "HEATWAVE"],
+            [64, "LIGHTSCREEN"],
+            [71, "SOLARBEAM"],
+            [71, "DRILLPECK"],
+            [71, "BLIZZARD"],
+            [78, "SKYATTACK"],
+            [78, "THUNDER"],
+            [78, "SHEERCOLD"],
+            [85, "SUNNYDAY"],
+            [85, "RAINDANCE"],
+            [85, "HAIL"],
+            [92, "HURRICANE"],
+            [92, "ZAPCANNON"],
+            [92, "HURRICANE"]
+        ],
         "genderRate":  "Female50Percent",
         "growthRate":  "Medium",
         "baseExp":  100,
@@ -30,7 +81,8 @@
     },
     {
         "name":  "FakemonTwo",
-        "internalName":  "FAKEMON2",
+        "internalName":  "2_JSON",
+        "author":  "JSON",
         "type1":  ":NORMAL",
         "type2":  "",
         "hp":  60,
@@ -58,6 +110,3 @@
         "pokedex":  "A second placeholder Fakemon entry."
     }
 ]
-
-
-
