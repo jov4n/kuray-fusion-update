@@ -173,6 +173,64 @@ module FakemonUtility
     echoln "FakemonUtility: Successfully injected #{data.length} Fakemon."
   end
 
+  def self.parse_moveset(raw)
+    return nil if raw.nil?
+    moves = []
+    if raw.is_a?(String)
+      tokens = raw.split(',').map { |t| t.strip }.reject { |t| t.empty? }
+      tokens.each_slice(2) do |level_raw, move_raw|
+        next if level_raw.nil? || move_raw.nil?
+        level = level_raw.to_i
+        next if level <= 0
+        move_sym = move_raw.to_s.gsub(':', '').upcase.to_sym
+        moves << [level, move_sym]
+      end
+      return nil if moves.empty?
+      return moves
+    end
+    return nil if !raw.respond_to?(:each)
+    raw.each do |entry|
+      begin
+        if entry.is_a?(Array) || entry.respond_to?(:to_ary)
+          level = entry[0].to_i
+          move = entry[1]
+          next if level <= 0 || move.nil?
+          moves << [level, move.to_s.gsub(':', '').upcase.to_sym]
+        elsif entry.respond_to?(:keys) || entry.is_a?(Hash)
+          level = (entry['level'] || entry[:level]).to_i
+          move = entry['move'] || entry[:move] || entry['name'] || entry[:name]
+          next if level <= 0 || move.nil?
+          moves << [level, move.to_s.gsub(':', '').upcase.to_sym]
+        elsif entry.respond_to?(:[])
+          level = entry[0].to_i
+          move = entry[1]
+          next if level <= 0 || move.nil?
+          moves << [level, move.to_s.gsub(':', '').upcase.to_sym]
+        end
+      rescue
+        next
+      end
+    end
+    if moves.empty?
+      flat = []
+      raw.each do |entry|
+        if entry.respond_to?(:to_a) && !entry.is_a?(String)
+          flat.concat(entry.to_a)
+        else
+          flat << entry
+        end
+      end
+      flat.each_slice(2) do |level_raw, move_raw|
+        next if level_raw.nil? || move_raw.nil?
+        level = level_raw.to_i
+        next if level <= 0
+        moves << [level, move_raw.to_s.gsub(':', '').upcase.to_sym]
+      end
+    end
+    return nil if moves.empty?
+    moves
+  end
+
   def self.register_fakemon(p, index)
     internal_name = (p['internalName'] || "FAKEMON").to_s.strip.upcase
     author = (p['author'] || "FAKEMON").to_s.strip.upcase.gsub(/[^A-Z0-9]/, "")
@@ -183,7 +241,10 @@ module FakemonUtility
       id = "#{index + 1}_#{author}".to_sym
     end
     INTERNAL_NAME_TO_ID[internal_name.to_sym] = id
-    return if GameData::Species::DATA.has_key?(id) # Avoid double registration
+    # Allow JSON edits to take effect without requiring a full restart.
+    if GameData::Species::DATA.has_key?(id)
+      GameData::Species::DATA.delete(id)
+    end
     
     # id_number decoupled - relying on Symbol lookup
     # Clean types and other symbols
@@ -197,6 +258,26 @@ module FakemonUtility
     habitat = (p['habitat'] || "None").to_sym
     compatibility = (p['compatibility'] || "Undiscovered").split(',').map { |c| c.strip.to_sym }
 
+    raw_moves = p['moves'] || p['moveset'] || p['pe_moveset']
+    moves = parse_moveset(raw_moves)
+    begin
+      raw_class = raw_moves ? raw_moves.class.to_s : "nil"
+      preview = ""
+      if raw_moves.respond_to?(:each)
+        preview_items = []
+        raw_moves.each do |e|
+          preview_items << e
+          break if preview_items.length >= 4
+        end
+        preview = preview_items.inspect
+      else
+        preview = raw_moves.inspect
+      end
+      echoln "FakemonUtility: #{internal_name} raw moves class=#{raw_class} preview=#{preview}"
+      echoln "FakemonUtility: #{internal_name} parsed moves count=#{moves ? moves.length : 0} preview=#{moves ? moves[0,4].inspect : '[]'}"
+    rescue => e
+      echoln "FakemonUtility: #{internal_name} moves debug failed: #{e.message}"
+    end
     hash = {
       :id => id,
       :id_number => index + 1,
@@ -218,7 +299,7 @@ module FakemonUtility
       :gender_ratio => gender_ratio,
       :catch_rate => p['rareness'] || 45,
       :happiness => p['happiness'] || 70,
-      :moves => [[1, :TACKLE]], 
+      :moves => (moves || [[1, :TACKLE]]),
       :abilities => abilities,
       :egg_groups => compatibility,
       :hatch_steps => p['stepsToHatch'] || 5000,
